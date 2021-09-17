@@ -9,3 +9,4 @@ pwd
 echo "attempting python"
 python .github/action-docker/sample_python.py
 echo "That ran (or not) the python code"
+ls -al ~
