@@ -56,9 +56,9 @@ jobs:
       
       - name: create-summary-files
         run: |
-        mkdir -p tmp/artifact
-        echo ${{needs.changedfiles.outputs.all}} > tmp/artifact/all.txt
-        echo ${{needs.changedfiles.outputs.yml}} > tmp/artifact/yml.txt
+          mkdir -p tmp/artifact
+          echo ${{needs.changedfiles.outputs.all}} > tmp/artifact/all.txt
+          echo ${{needs.changedfiles.outputs.yml}} > tmp/artifact/yml.txt
       
       - uses: actions/upload-artifact@v2
         with:
