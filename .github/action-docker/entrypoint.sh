@@ -4,5 +4,8 @@ echo $1
 echo "adding quotes"
 echo \"$1\" > modified_files.txt
 echo here
-python sample_python.py
+ls -al
+pwd
+echo "attempting python"
+python ./sample_python.py
 echo "That ran the python code"
