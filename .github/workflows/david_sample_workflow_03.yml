@@ -10,7 +10,11 @@ jobs:
         run: echo "Hello World!"
       - name: see-files
         run: |
+          echo "Finding files here"
+          pwd
           ls -al
+          echo "Going to the parent"
+          pwd
           cd ..
           ls -al
   
