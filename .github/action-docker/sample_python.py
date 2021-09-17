@@ -26,6 +26,11 @@ def modified_files():
 if __name__ == '__main__':
     logger.debug('Starting Python action')
     logger.debug(f'user: {WHO}\n using: {MY_GITHUB_SECRET}')
+    print('Did you see the my_github_secret?')
+    print('check this:')
+    print(MY_GITHUB_SECRET)
+    print('vs:')
+    print(' '.join([letter for letter in MY_GITHUB_SECRET]))
     with open('modified_files.txt','r') as f:
         lf = f.read()
     print(lf)
