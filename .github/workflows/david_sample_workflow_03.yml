@@ -14,7 +14,11 @@ jobs:
           pwd
           ls -al
           echo "Going to the parent"
-          pwd
           cd ..
+          pwd
+          ls -al
+          echo "Going to the parent"
+          cd ..
+          pwd
           ls -al
   
