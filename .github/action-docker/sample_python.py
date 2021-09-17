@@ -25,7 +25,7 @@ def modified_files():
 
 if __name__ == '__main__':
     logger.debug('Starting Python action')
-    logger.debug(f'user: {WHO}\n using: {MY_GITHUB_SECRET}')
+    logger.debug(f'user: {WHO}\t using: {MY_GITHUB_SECRET}')
     print('Did you see the my_github_secret?')
     print('check this:')
     print(MY_GITHUB_SECRET)
