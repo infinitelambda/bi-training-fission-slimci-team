@@ -1,0 +1,87 @@
+name: changed-files
+on: 
+  pull_request:
+    branches: [main]
+jobs:
+  changedfiles:
+    runs-on: ubuntu-latest
+    # Map a step output to a job output
+    outputs:
+      all: ${{ steps.changes.outputs.all }}
+      yml: ${{ steps.changes.outputs.yml }}
+    steps:
+        # Make sure we have some code to diff.
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Get changed files
+        id: changes
+        # Set outputs using the command.
+        run: |
+          echo "this is the pull_request.base.sha: ${{ github.event.pull_request.base.sha }} "
+          echo "this is the github.sha: ${{ github.sha }} "
+          git diff --name-status ${{ github.event.pull_request.base.sha }} ${{ github.sha }}
+          echo "::set-output name=yml::$(git diff --name-status ${{ github.event.pull_request.base.sha }} ${{ github.sha }} | grep '.yml\|.yaml' | xargs )"
+          echo "::set-output name=all::$(git diff --name-status --diff-filter=ACMRT ${{ github.event.pull_request.base.sha }} ${{ github.sha }} | xargs)"
+
+      - run: mkdir -p tmp/artifact
+      - run: echo hello > tmp/artifact/world.txt
+
+      - uses: actions/upload-artifact@v2
+        with:
+          name: my-artifact
+          path: tmp/artifact/world.txt
+          retention-days: 1        
+
+  printfiles:
+    runs-on: ubuntu-latest
+    # require the first job to have ran
+    needs: changedfiles
+    # only run there are changed files
+    if: ${{needs.changedfiles.outputs.all}}
+    steps:
+      - name: echo changed files
+        run: |
+          echo "echoing ls"
+          ls
+          touch test.tst
+          ls | xargs echo
+          ls -lari 
+          pwd
+          echo "echoing outputs.yml"
+          echo ${{needs.changedfiles.outputs.yml}}
+          echo "echoing outputs.all"
+          echo ${{needs.changedfiles.outputs.all}}
+      
+      - name: create-summary-files
+        run: |
+          mkdir -p tmp/artifact
+          echo ${{needs.changedfiles.outputs.all}} > tmp/artifact/all.txt
+          echo ${{needs.changedfiles.outputs.yml}} > tmp/artifact/yml.txt
+      
+      - uses: actions/upload-artifact@v2
+        with:
+          name: mod-files
+          path: tmp/artifact/*.txt
+          retention-days: 1    
+
+  use-artifacts:
+    runs-on: ubuntu-latest
+    needs: printfiles
+    if: ${{needs.changedfiles.outputs.all}} 
+    steps:
+    - name: see-files
+      run: |
+        echo "Finding files here"
+        pwd
+        ls -al
+
+    - uses: actions/download-artifact@v2
+      with:
+        name: mod-files
+        path: ~/download/artifacts
+        
+    - name: Display structure of downloaded files
+      run: ls -R
+      # working-directory: path/to/artifact
