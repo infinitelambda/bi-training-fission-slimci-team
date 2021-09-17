@@ -1,0 +1,35 @@
+name: changed-files
+on: 
+  pull_request:
+    branches: [main]
+jobs:
+  changedfiles:
+    runs-on: ubuntu-latest
+    # Map a step output to a job output
+    outputs:
+      all: ${{ steps.changes.outputs.all }}
+      ts: ${{ steps.changes.outputs.ts }}
+    steps:
+        # Make sure we have some code to diff.
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Get changed files
+        id: changes
+        # Set outputs using the command.
+        run: |
+          echo "this is the pull_request.base.sha: ${{ github.event.pull_request.base.sha }} "
+          echo "this is the github.sha: ${{ github.sha }} "
+          git diff --name-status ${{ github.event.pull_request.base.sha }} ${{ github.sha }}
+          echo "::set-output name=all::$(git diff --name-status ${{ github.event.pull_request.base.sha }} ${{ github.sha }} | grep '.twb\|.tds' | xargs )"
+          echo "::set-output name=ts::$(git diff --name-status --diff-filter=ACMRT ${{ github.event.pull_request.base.sha }} ${{ github.sha }} | grep .ts$ | xargs)"
+
+      - run: mkdir -p tmp/artifact
+      - run: echo hello > tmp/artifact/world.txt
+
+      - uses: actions/upload-artifact@v2
+        with:
+          name: my-artifact
+          path: tmp/artifact/world.txt
+          retention-days: 1        
