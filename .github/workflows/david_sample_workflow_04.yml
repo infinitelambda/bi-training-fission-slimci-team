@@ -1,0 +1,14 @@
+name: see-env
+on: 
+  pull_request:
+    branches: [main]
+jobs:
+  my-job:
+    runs-on: ubuntu-latest
+    steps:
+      - name: my-step
+        run: echo "Hello World!"
+      - name: see-files
+        run: |
+          env
+  
