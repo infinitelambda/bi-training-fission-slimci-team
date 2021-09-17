@@ -18,6 +18,7 @@ COPY ./ /app/
 RUN chmod 777 -R /app
 WORKDIR /app
 COPY entrypoint.sh /entrypoint.sh
+COPY sample_python.py /sample_python.py 
 RUN chmod +x entrypoint.sh
 
 ENTRYPOINT ["/entrypoint.sh"]
