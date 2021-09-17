@@ -80,7 +80,7 @@ jobs:
     - uses: actions/download-artifact@v2
       with:
         name: mod-files
-        path: ~/download/artifacts
+        path: ./download/artifacts
         
     - name: Display structure of downloaded files
       run: ls -R
