@@ -8,7 +8,7 @@ import argparse
 import sys
 
 WHO = os.environ['GITHUB_ACTOR']
-MY_GITHUB_SECRET = os.environ['MY_GITHUB_SECRET']
+MY_GITHUB_SECRET = os.environ['my_github_secret']
 
 
 logger = MyLogger(log_file='sample.log', log_path='logs', name=__name__)
