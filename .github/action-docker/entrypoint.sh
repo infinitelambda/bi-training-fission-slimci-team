@@ -7,5 +7,5 @@ echo here
 ls -al
 pwd
 echo "attempting python"
-python ./sample_python.py
-echo "That ran the python code"
+python .github/action-docker/sample_python.py
+echo "That ran (or not) the python code"
