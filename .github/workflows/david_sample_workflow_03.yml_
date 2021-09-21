@@ -1,0 +1,25 @@
+# Run a series of commands, runs on pull_request against main
+name: see-files
+on: 
+  pull_request:
+    branches: [main]
+jobs:
+  my-job:
+    runs-on: ubuntu-latest
+    steps:
+      - name: my-step
+        run: echo "Hello World!"
+      - name: see-files
+        run: |
+          echo "Finding files here"
+          pwd
+          ls -al
+          echo "Going to the parent"
+          cd ..
+          pwd
+          ls -al
+          echo "Going to the parent"
+          cd ..
+          pwd
+          ls -al
+  
