@@ -1,0 +1,12 @@
+name: hello-world
+on:
+  push:
+    branches: [main]
+jobs:
+  my-job:
+    runs-on: ubuntu-latest
+    steps:
+      - name: first-step
+        run: echo "Hello World!" >> hello_world.txt
+      - name: second-step
+        run: echo "Is there a file?"
