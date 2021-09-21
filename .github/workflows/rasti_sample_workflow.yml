@@ -1,0 +1,10 @@
+name: rasti_sample_workflow
+on: push
+jobs:
+  sample_job:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v2
+      - name: Very important step
+        run: echo "Just testing out if this works on push"
