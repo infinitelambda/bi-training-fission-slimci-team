@@ -1,3 +1,5 @@
+# Set Outputs and upload an artifact, runs on pull_request against main
+
 name: changed-files
 on: 
   pull_request:
@@ -8,7 +10,7 @@ jobs:
     # Map a step output to a job output
     outputs:
       all: ${{ steps.changes.outputs.all }}
-      ts: ${{ steps.changes.outputs.ts }}
+      yml: ${{ steps.changes.outputs.yml }}
     steps:
         # Make sure we have some code to diff.
       - name: Checkout repository
@@ -22,8 +24,8 @@ jobs:
           echo "this is the pull_request.base.sha: ${{ github.event.pull_request.base.sha }} "
           echo "this is the github.sha: ${{ github.sha }} "
           git diff --name-status ${{ github.event.pull_request.base.sha }} ${{ github.sha }}
-          echo "::set-output name=all::$(git diff --name-status ${{ github.event.pull_request.base.sha }} ${{ github.sha }} | grep '.twb\|.tds' | xargs )"
-          echo "::set-output name=ts::$(git diff --name-status --diff-filter=ACMRT ${{ github.event.pull_request.base.sha }} ${{ github.sha }} | grep .ts$ | xargs)"
+          echo "::set-output name=yml::$(git diff --name-status ${{ github.event.pull_request.base.sha }} ${{ github.sha }} | grep '.yml\|.yaml' | xargs )"
+          echo "::set-output name=all::$(git diff --name-status --diff-filter=ACMRT ${{ github.event.pull_request.base.sha }} ${{ github.sha }} | xargs)"
 
       - run: mkdir -p tmp/artifact
       - run: echo hello > tmp/artifact/world.txt

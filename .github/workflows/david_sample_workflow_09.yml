@@ -1,3 +1,5 @@
+# Uses a docker-based action stored in the same repo.
+# Chain of jobs reusing outputs.
 name: python-job-files
 on: 
   pull_request:

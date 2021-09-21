@@ -1,3 +1,5 @@
+# Use chained jobs and reuse the output of one in the next. Runs on pull_request against main
+
 name: changed-files
 on: 
   pull_request:

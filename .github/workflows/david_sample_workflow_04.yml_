@@ -1,3 +1,5 @@
+# What are the environmental variables available?, runs on pull_request against main
+
 name: see-env
 on: 
   pull_request:

@@ -1,3 +1,4 @@
+# Base action, runs on every push in the main branch
 name: hello-world_on_push
 on: 
   push:

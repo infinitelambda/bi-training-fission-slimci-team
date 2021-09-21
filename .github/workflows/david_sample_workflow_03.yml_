@@ -1,3 +1,4 @@
+# Run a series of commands, runs on pull_request against main
 name: see-files
 on: 
   pull_request:

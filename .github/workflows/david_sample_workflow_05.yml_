@@ -1,3 +1,5 @@
+# Use an external action to clone the repo, runs on pull_request against main
+
 name: clone-the-repo
 on: 
   pull_request:
