@@ -27,21 +27,26 @@ jobs:
           # install packages
           dbt deps
 
-      - name: Run seeds
-        run: dbt seed --profiles-dir . --profile fission
-      
-      - name: Run all models
-        run: dbt run --profiles-dir . --profile fission
-      
-      - name: Run all tests
-        run: dbt test --profiles-dir . --profile fission
-
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
           role-to-assume: arn:aws:iam::389099493521:role/bi-learning-slimci-role
           aws-region: us-east-2
           role-duration-seconds: 1200
+
+      - name: Fetch manifest from s3
+        run: aws s3 cp s3://bi-learning-slimci/manifest.json ./old_manifest/manifest.json 
+
+      - name: Run seeds
+        run: dbt seed --profiles-dir . --profile fission -s state:modified --state ./old_manifest/manifest.json
+      
+      - name: Run all models
+        run: dbt run --profiles-dir . --profile fission -s state:modified+ --state ./old_manifest/manifest.json
+      
+      - name: Run all tests
+        run: dbt test --profiles-dir . --profile fission -s state:modified+ --state ./old_manifest/manifest.json
+
+      
       
       - name: Copy manifest.json to s3 bucket
         run: aws s3 cp ./target/manifest.json s3://bi-learning-slimci/manifest.json
