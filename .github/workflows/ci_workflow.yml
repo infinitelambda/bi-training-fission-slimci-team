@@ -4,7 +4,7 @@ on:
     branches:
       - rasti
 jobs:
-  sample_job:
+  ci_workflow:
     env:
       DBT_PWD:        ${{  secrets.DBT_PWD }} 
 
