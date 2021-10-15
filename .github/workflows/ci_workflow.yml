@@ -6,7 +6,6 @@ on:
 jobs:
   sample_job:
     env:
-      DBT_DB_ACCOUNT: ${{  secrets.DBT_DB_ACCOUNT }}
       DBT_PWD:        ${{  secrets.DBT_PWD }} 
 
     runs-on: ubuntu-latest

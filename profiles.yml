@@ -3,7 +3,7 @@ fission:
   outputs:
     ci:
       type:       snowflake
-      account:    "{{ env_var('DBT_DB_ACCOUNT') }}"
+      account:    infinitelambda.eu-west-1
       password:   "{{ env_var('DBT_PWD') }}" 
       user:       BI_LEARNING_SLIMCI_USER
       role:       SYSADMIN
