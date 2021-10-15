@@ -1,7 +1,7 @@
 fission:
-  target: ci
+
   outputs:
-    dev:
+    ci:
       type:       snowflake
       account:    "{{ env_var('DBT_DB_ACCOUNT') }}"
       password:   "{{ env_var('DBT_PWD') }}" 
@@ -12,3 +12,5 @@ fission:
       schema:     CI
       threads: 4
       client_session_keep_alive: False
+
+  target: ci
