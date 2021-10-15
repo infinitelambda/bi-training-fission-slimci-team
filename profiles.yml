@@ -1,0 +1,14 @@
+fission:
+  target: ci
+  outputs:
+    dev:
+      type:       snowflake
+      account:    "{{ env_var('DBT_DB_ACCOUNT') }}"
+      password:   "{{ env_var('DBT_PWD') }}" 
+      user:       BI_LEARNING_SLIMCI_USER
+      role:       SYSADMIN
+      database:   BI_LEARNING_SLIMCI
+      warehouse:  DEMO_WH
+      schema:     CI
+      threads: 4
+      client_session_keep_alive: False
