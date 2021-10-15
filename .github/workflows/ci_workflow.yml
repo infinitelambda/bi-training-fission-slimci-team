@@ -38,13 +38,13 @@ jobs:
         run: aws s3 cp s3://bi-learning-slimci/manifest.json ./old_manifest/manifest.json 
 
       - name: Run seeds
-        run: dbt seed --profiles-dir . --profile fission -s state:modified --state ./old_manifest
+        run: dbt seed --profiles-dir . --profile fission -s state:modified --state ./old_manifest --defer
       
       - name: Run all models
-        run: dbt run --profiles-dir . --profile fission -s state:modified+ --state ./old_manifest
+        run: dbt run --profiles-dir . --profile fission -s state:modified+ --state ./old_manifest --defer
       
       - name: Run all tests
-        run: dbt test --profiles-dir . --profile fission -s state:modified+ --state ./old_manifest
+        run: dbt test --profiles-dir . --profile fission -s state:modified+ --state ./old_manifest --defer
 
       
       
