@@ -6,7 +6,9 @@ on:
 jobs:
   ci_workflow:
     env:
-      DBT_PWD:        ${{  secrets.DBT_PWD }} 
+      DBT_PWD: ${{  secrets.DBT_PWD }} 
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
     runs-on: ubuntu-latest
     steps:
