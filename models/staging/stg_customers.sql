@@ -19,4 +19,4 @@ renamed as (
 
 )
 
-select * from renamed limit 10
+select * from renamed
