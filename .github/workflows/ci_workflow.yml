@@ -2,7 +2,7 @@ name: slim_ci
 on: 
   pull_request:
     branches:
-      - session_03
+      - main
 jobs:
   ci_workflow:
     env:
