@@ -1,0 +1,24 @@
+
+name: 'slim_ci_jaffle_shop'
+version: '0.1'
+profile: 'fission'
+config-version: 2
+
+source-paths: ["models"]
+analysis-paths: ["analysis"]
+test-paths: ["tests"]
+data-paths: ["data"]
+macro-paths: ["macros"]
+
+target-path: "target"
+clean-targets:
+    - "target"
+    - "dbt_modules"
+    - "logs"
+
+models:
+  slim_ci_jaffle_shop:
+      mart:
+        materialized: view
+      staging:
+        materialized: view

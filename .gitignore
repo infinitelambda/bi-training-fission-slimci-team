@@ -1,0 +1,5 @@
+.env
+dbt_modules/
+target/*
+!target/manifest.json
+logs/
