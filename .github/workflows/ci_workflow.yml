@@ -1,8 +1,8 @@
 name: slim_ci
 on: 
-  push:
+  pull_request:
     branches:
-      - rasti
+      - session_03
 jobs:
   ci_workflow:
     env:
