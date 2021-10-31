@@ -9,12 +9,11 @@ jobs:
       DBT_PWD: ${{ secrets.DBT_PWD }}
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      CI_SCHEMA: ${{ github.event.pull_request.number }}
+      CI_SCHEMA: ${{ github.event.pull_request.id }}
 
     runs-on: ubuntu-latest
     steps:
       - name: view the PR number
         run: |
-          echo "PR number = ${{ github.event.pull_request.number }}"
+          echo "PR number = ${{ github.event.pull_request.id }}"
           echo "PR number = ${{ env.CI_SCHEMA }}"
-    
