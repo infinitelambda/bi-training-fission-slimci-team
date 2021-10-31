@@ -10,15 +10,21 @@ jobs:
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       PR_ID: ${{ github.event.pull_request.id }}
-      CI_SCHEMA: format('CI_PR_{1}', ${{ env.PR_ID }})
 
     runs-on: ubuntu-latest
+    outputs:
+      output1: ${{ steps.step2.outputs.ci_schema }}
     steps:
       - name: view the PR ID
+        id: step1
         run: echo "PR ID = ${{ env.PR_ID }}"
 
       - name: generate schema name
-        run: echo "CI_SCHEMA = format('CI_PR_{1}', ${{ env.PR_ID }})" >> $GITHUB_ENV
+        id: step2
+        run: echo "::set-output name=ci_schema::format('CI_PR_{1}', ${{ env.PR_ID }})"
 
-      - name: view schema name
-        run: echo "Schema name = ${{ env.CI_SCHEMA }}"
+  cleanup:
+      runs-on: ubuntu-latest
+      needs: ci_build
+      steps:
+        - run: echo ${{needs.ci_build.outputs.output1}} 
