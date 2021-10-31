@@ -17,6 +17,7 @@ jobs:
         run: echo "PR ID = ${{ env.PR_ID }}"
 
       - name: generate schema name
-        run: echo "CI_SCHEMA = ${{ format('CI_PR_{1}', ${{ env.PR_ID }}) }}" >> $GITHIB_ENV
+        run: echo "CI_SCHEMA = format('CI_PR_{1}', ${{ env.PR_ID }})" >> $GITHIB_ENV
+
       - name: view schema name
         run: echo "Schema name = ${{ env.CI_SCHEMA }}"
