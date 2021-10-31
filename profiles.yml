@@ -4,12 +4,12 @@ fission:
     ci:
       type:       snowflake
       account:    infinitelambda.eu-west-1
-      password:   "{{ env_var('DBT_PWD') }}" 
+      password:   "{{ env_var('DBT_PWD') }}"
       user:       BI_LEARNING_SLIMCI_USER
       role:       SYSADMIN
       database:   BI_LEARNING_SLIMCI
       warehouse:  DEMO_WH
-      schema:     CI
+      schema:     "{{ env_var('CI_SCHEMA') }}"
       threads: 4
       client_session_keep_alive: False
 
