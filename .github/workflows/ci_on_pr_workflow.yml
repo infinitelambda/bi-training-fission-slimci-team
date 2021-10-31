@@ -10,14 +10,12 @@ jobs:
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       PR_ID: ${{ github.event.pull_request.id }}
+      CI_SCHEMA: ${{ format('CI_PR_{1}', ${{ env.PR_ID }}) }}
 
     runs-on: ubuntu-latest
     steps:
       - name: view the PR ID
         run: echo "PR ID = ${{ env.PR_ID }}"
-
-      - name: create a schema name env var
-        run: echo "CI_SCHEMA=format('CI_PR_{1}', ${{ env.PR_ID }})" >> $GITHUB_ENV
 
       - name: view schema name
         run: echo "Schema name = ${{ env.CI_SCHEMA }}"
