@@ -9,22 +9,9 @@ jobs:
       DBT_PWD: ${{ secrets.DBT_PWD }}
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      PR_ID: ${{ github.event.pull_request.id }}
+      CI_SCHEMA: "CI_PR_${{ github.event.pull_request.id }}"
 
     runs-on: ubuntu-latest
-    outputs:
-      output1: ${{ steps.step2.outputs.ci_schema }}
     steps:
-      - name: view the PR ID
-        id: step1
-        run: echo "PR ID = ${{ env.PR_ID }}"
-
-      - name: generate schema name
-        id: step2
-        run: echo "::set-output name=ci_schema::${{ format('CI_PR_{1}', ${{ env.PR_ID }}) }}"
-
-  cleanup:
-      runs-on: ubuntu-latest
-      needs: ci_build
-      steps:
-        - run: echo ${{needs.ci_build.outputs.output1}}
+      - name: view the ci_schema var
+        run: echo "Schema name = ${{ env.CI_SCHEMA }}"
