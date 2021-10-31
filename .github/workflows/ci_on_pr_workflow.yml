@@ -21,10 +21,10 @@ jobs:
 
       - name: generate schema name
         id: step2
-        run: echo "::set-output name=ci_schema::format('CI_PR_{1}', ${{ env.PR_ID }})"
+        run: echo "::set-output name=ci_schema::${{ format('CI_PR_{1}', ${{ env.PR_ID }}) }}"
 
   cleanup:
       runs-on: ubuntu-latest
       needs: ci_build
       steps:
-        - run: echo ${{needs.ci_build.outputs.output1}} 
+        - run: echo ${{needs.ci_build.outputs.output1}}
