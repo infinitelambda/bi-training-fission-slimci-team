@@ -10,6 +10,7 @@ jobs:
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       PR_ID: ${{ github.event.pull_request.id }}
+      CI_SCHEMA: format('CI_PR_{1}', ${{ env.PR_ID }}
 
     runs-on: ubuntu-latest
     steps:
