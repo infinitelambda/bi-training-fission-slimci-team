@@ -45,7 +45,7 @@ jobs:
         run: dbt run --profiles-dir . --profile fission -s state:modified+ --state ./old_manifest --defer
 
       - name: Run all tests
-        run: dbt test --profiles-dir . --profile fission -s state:modified+ --state ./old_manifest --defer
+        run: dbt test --exclude test_name:relationships--profiles-dir . --profile fission -s state:modified+ --state ./old_manifest --defer
 
 
       - name: Copy manifest.json to s3 bucket
