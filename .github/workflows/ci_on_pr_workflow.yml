@@ -2,7 +2,7 @@ name: slim_ci_on_pr
 on:
   pull_request:
     branches:
-      - session_04
+      - 'session_04'
 jobs:
   ci_on_pr:
     env:
