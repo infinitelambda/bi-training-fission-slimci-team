@@ -16,5 +16,8 @@ jobs:
       - name: view the PR ID
         run: echo "PR ID = ${{ env.PR_ID }}"
 
+      - name: create a schema name env var
+        run: echo "CI_SCHEMA=format('CI_PR_{1}', ${{ env.PR_ID }})" >> $GITHUB_ENV
+
       - name: view schema name
-        run: echo "Schema name = format('CI_PR_{1}', ${{ env.PR_ID }})"
+        run: echo "Schema name = ${{ env.CI_SCHEMA }}"
