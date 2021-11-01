@@ -24,4 +24,4 @@ models:
         materialized: view
 
 vars:
-  CI_SCHEMA: "DBT_IRINA"
+  CI_SCHEMA: "{{ env_var('CI_SCHEMA') }}"
