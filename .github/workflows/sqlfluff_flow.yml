@@ -45,4 +45,4 @@ jobs:
         run: echo "::set-output name=modified_models::$(dbt ls --select state:modified+ --state ./prod_manifest --resource-type model --output path --profiles-dir . --profile fission --target prod)"
 
       - name: sqlfluff
-        run: for m in ${{ steps.dbt_ls.outputs.modified_models }}; do sqlfluff lint --nofail; done
+        run: for m in ${{ steps.dbt_ls.outputs.modified_models }}; do sqlfluff lint m --nofail; done
