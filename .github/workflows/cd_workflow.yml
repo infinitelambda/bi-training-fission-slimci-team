@@ -5,36 +5,36 @@ on:
     branches:
       - 'session_04'
 jobs:
-  env:
-    DBT_PWD_PROD: ${{ secrets.DBT_PWD_PROD }}
-    AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-    AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-    CI_SCHEMA: "CI_PR_${{ github.event.pull_request.id }}"
+  on_merge:
+    env:
+      DBT_PWD_PROD: ${{ secrets.DBT_PWD_PROD }}
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      CI_SCHEMA: "CI_PR_${{ github.event.pull_request.id }}"
+      
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v2
 
-    on_merge:
-      runs-on: ubuntu-latest
-      steps:
-        - name: Checkout repo
-          uses: actions/checkout@v2
+      - name: Python setup
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.9'
 
-        - name: Python setup
-          uses: actions/setup-python@v2
-          with:
-            python-version: '3.9'
+      - name: install-requirements
+        run: |
+          pip install dbt==0.21.0
 
-        - name: install-requirements
-          run: |
-            pip install dbt==0.21.0
+          # install packages
+          dbt deps
 
-            # install packages
-            dbt deps
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          role-to-assume: arn:aws:iam::389099493521:role/bi-learning-slimci-role
+          aws-region: us-east-2
+          role-duration-seconds: 1200
 
-        - name: Configure AWS credentials
-          uses: aws-actions/configure-aws-credentials@v1
-          with:
-            role-to-assume: arn:aws:iam::389099493521:role/bi-learning-slimci-role
-            aws-region: us-east-2
-            role-duration-seconds: 1200
-
-        - name: Drop CI schema
-          run: dbt run-operation drop_schema --profiles-dir . --profile fission --target dev
+      - name: Drop CI schema
+        run: dbt run-operation drop_schema --profiles-dir . --profile fission --target dev
