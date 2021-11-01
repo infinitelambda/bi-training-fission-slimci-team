@@ -1,4 +1,4 @@
-name: ci_on_pr
+name: slim_ci_on_pr
 on:
   pull_request:
     branches:
