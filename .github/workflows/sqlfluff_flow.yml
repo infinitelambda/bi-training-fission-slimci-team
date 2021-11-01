@@ -42,7 +42,9 @@ jobs:
 
       - name: list modified dbt models
         id: dbt_ls
-        run: echo "::set-output name=modified_models::$(dbt ls --select state:modified+ --state ./prod_manifest --resource-type model --output path --profiles-dir . --profile fission --target prod)"
+        run: echo 'modified_models = $(dbt ls --select state:modified+ --state ./prod_manifest --resource-type model --output path --profiles-dir . --profile fission --target prod)' >> $GITHUB_ENV
+        #run: echo "::set-output name=modified_models::$(dbt ls --select state:modified+ --state ./prod_manifest --resource-type model --output path --profiles-dir . --profile fission --target prod)"
 
       - name: sqlfluff
-        run: for m in ${{ steps.dbt_ls.outputs.modified_models }}; do sqlfluff lint m --nofail; done
+        #run: sqlfluff lint ${{ steps.dbt_ls.outputs.modified_models }} --nofail
+        run: echo "${{ env.modified_models }}"
