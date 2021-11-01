@@ -11,7 +11,7 @@ jobs:
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       CI_SCHEMA: "CI_PR_${{ github.event.pull_request.id }}"
-      
+
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
@@ -37,4 +37,4 @@ jobs:
           role-duration-seconds: 1200
 
       - name: Drop CI schema
-        run: dbt run-operation drop_schema --profiles-dir . --profile fission --target dev
+        run: dbt run-operation drop_schema --profiles-dir . --profile fission
