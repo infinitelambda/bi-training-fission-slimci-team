@@ -3,7 +3,7 @@
   {{ log('Statement to run:', info=True) }}
 
   {% set drop_command -%}
-    drop schema {{ target.database }}.{{ schema }};
+    drop schema if exists {{ target.database }}.{{ schema }};
   {%- endset %}
 
   {% do log(drop_command, info=True) %}
