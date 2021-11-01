@@ -50,10 +50,10 @@ jobs:
         run: dbt run --profiles-dir . --profile fission -s state:modified+ --state ./prev_prod_run --defer --target prod
 
       - name: Run all tests
-        run: dbt test --exclude test_name:relationships --profiles-dir . --profile fission -s state:modified+ --state ./prev_prod_run --defer --target prod
+        run: dbt test --profiles-dir . --profile fission -s state:modified+ --state ./prev_prod_run --defer --target prod
 
       - name: Generate dbt docs
-        run: dbt docs generate --target prod
+        run: dbt docs generate --profiles-dir . --profile fission --target prod
 
       - name: Copy prod artifacts to s3 bucket
         run: |
