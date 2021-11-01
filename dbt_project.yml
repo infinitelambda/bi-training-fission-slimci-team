@@ -22,3 +22,6 @@ models:
         materialized: view
       staging:
         materialized: view
+
+vars:
+  CI_SCHEMA: "DBT_IRINA"

@@ -1,14 +1,15 @@
-name: slim_ci
-on: 
+name: ci_on_pr
+on:
   pull_request:
     branches:
-      - main
+      - 'session_04'
 jobs:
-  ci_workflow:
+  ci_build:
     env:
-      DBT_PWD: ${{  secrets.DBT_PWD }} 
+      DBT_PWD: ${{ secrets.DBT_PWD }}
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      CI_SCHEMA: "CI_PR_${{ github.event.pull_request.id }}"
 
     runs-on: ubuntu-latest
     steps:
@@ -23,7 +24,7 @@ jobs:
       - name: install-requirements
         run: |
           pip install dbt==0.21.0
-          
+
           # install packages
           dbt deps
 
@@ -34,19 +35,14 @@ jobs:
           aws-region: us-east-2
           role-duration-seconds: 1200
 
-      - name: Fetch manifest from s3
-        run: aws s3 cp s3://bi-learning-slimci/manifest.json ./old_manifest/manifest.json 
+      - name: Fetch prod manifest from s3
+        run: aws s3 cp s3://bi-learning-slimci/manifest.json ./prod_manifest/manifest.json
 
       - name: Run seeds
-        run: dbt seed --profiles-dir . --profile fission -s state:modified --state ./old_manifest
-      
-      - name: Run all models
-        run: dbt run --profiles-dir . --profile fission -s state:modified+ --state ./old_manifest --defer
-      
-      - name: Run all tests
-        run: dbt test --profiles-dir . --profile fission -s state:modified+ --state ./old_manifest --defer
+        run: dbt seed --profiles-dir . --profile fission -s state:modified --state ./prod_manifest
 
-      
-      
-      - name: Copy manifest.json to s3 bucket
-        run: aws s3 cp ./target/manifest.json s3://bi-learning-slimci/manifest.json
+      - name: Run all models
+        run: dbt run --profiles-dir . --profile fission -s state:modified+ --state ./prod_manifest --defer
+
+      - name: Run all tests
+        run: dbt test --exclude test_name:relationships --profiles-dir . --profile fission -s state:modified+ --state ./prod_manifest --defer
