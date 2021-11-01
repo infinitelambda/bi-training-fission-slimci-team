@@ -2,7 +2,7 @@ name: sqlfluff_flow
 on:
   push:
     branches:
-      - 'session_04'
+      - 'session_04_01'
 
 jobs:
   sqlfluff-test:
