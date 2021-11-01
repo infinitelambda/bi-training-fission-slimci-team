@@ -42,7 +42,10 @@ jobs:
 
       - name: list modified dbt models
         id: dbt_ls
-        run: echo "::set-output name=modified_models::$(run dbt ls --select state:modified+ --state ./prod_manifest --resource-type model --output path)"
+        run: echo "::set-output name=modified_models::$(dbt ls --select state:modified+ --state ./prod_manifest --resource-type model --output path)"
 
       - name: sqlfluff
         run: sqlfluff lint models --nofail
+
+      - name: sqlfluff
+        run: sqlfluff lint ${{ steps.dbt_ls.outputs.modified_models }} --nofail
