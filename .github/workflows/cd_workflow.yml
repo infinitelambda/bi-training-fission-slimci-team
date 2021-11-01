@@ -52,6 +52,9 @@ jobs:
       - name: Run all tests
         run: dbt test --exclude test_name:relationships --profiles-dir . --profile fission -s state:modified+ --state ./prev_prod_run --defer --target prod
 
+      - name: Generate dbt docs
+        run: dbt docs generate --target prod
+
       - name: Copy prod artifacts to s3 bucket
         run: |
           aws s3 cp ./target/manifest.json s3://bi-learning-slimci/manifest.json
