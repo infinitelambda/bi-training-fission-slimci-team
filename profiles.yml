@@ -17,11 +17,11 @@ fission:
       type:       snowflake
       account:    infinitelambda.eu-west-1
       password:   "{{ env_var('DBT_PWD_PROD') }}"
-      user:       BI_LEARNING_SLIMCI_USER
-      role:       SYSADMIN
+      user:       FISSION_SLIMCI_PROD_USER
+      role:       FISSION_SLIMCI_PROD
       database:   BI_LEARNING_SLIMCI
       warehouse:  DEMO_WH
-      schema:     "{{ env_var('CI_SCHEMA') }}"
+      schema:     PROD
       threads: 4
       client_session_keep_alive: False
 
