@@ -1,0 +1,48 @@
+name: sqlfluff_flow
+on:
+  push:
+    branches:
+      - 'session_04'
+
+jobs:
+  sqlfluff-test:
+    env:
+      DBT_PWD_PROD: ${{ secrets.DBT_PWD_PROD }}
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - uses: actions/setup-python@v2
+        with:
+          python-version: '3.9.1'
+
+      - name: install-requirements
+        run: |
+          # pip install -r ./python/requirements.txt
+          pip install dbt==0.20.2
+          pip install sqlfluff
+          pip install sqlfluff[dbt]
+
+          # install packages
+          dbt deps
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          role-to-assume: arn:aws:iam::389099493521:role/bi-learning-slimci-role
+          aws-region: us-east-2
+          role-duration-seconds: 1200
+
+      - name: Fetch prod manifest from s3
+        run: aws s3 cp s3://bi-learning-slimci/manifest.json ./prod_manifest/manifest.json
+
+      - name: list modified dbt models
+        id: dbt_ls
+        run: echo "::set-output name=modified_models::$(run dbt ls --select state:modified+ --state ./prod_manifest --resource-type model --output path)"
+
+      - name: sqlfluff
+        run: sqlfluff lint models --nofail
