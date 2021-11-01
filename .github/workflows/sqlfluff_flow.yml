@@ -42,7 +42,7 @@ jobs:
 
       - name: list modified dbt models
         id: dbt_ls
-        run: echo "::set-output name=modified_models::$(dbt ls --select state:modified+ --state ./prod_manifest --profiles-dir . --profile fission --resource-type model --output path)"
+        run: echo "::set-output name=modified_models::$(dbt ls --select state:modified+ --state ./prod_manifest --resource-type model --output path --profiles-dir . --profile fission --target prod)"
 
       - name: sqlfluff
         run: sqlfluff lint models --nofail
