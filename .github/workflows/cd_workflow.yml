@@ -3,14 +3,14 @@ on:
   pull_request:
     types: ['closed']
     branches:
-      - 'session_04'
+      - 'session_04b'
 jobs:
   on_merge:
     env:
       DBT_PWD_PROD: ${{ secrets.DBT_PWD_PROD }}
       DBT_PWD: ${{ secrets.DBT_PWD }}
-      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_SLIM_CI_SERVICE_ACCOUNT_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SLIM_CI_SERVICE_ACCOUNT_SECRET }}
       CI_SCHEMA: "CI_PR_${{ github.event.pull_request.id }}"
 
     runs-on: ubuntu-latest
@@ -33,15 +33,15 @@ jobs:
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
-          role-to-assume: arn:aws:iam::389099493521:role/bi-learning-slimci-role
-          aws-region: us-east-2
+          # role-to-assume: arn:aws:iam::743265699366:role/Workato_test_access_S3
+          aws-region: eu-west-1
           role-duration-seconds: 1200
 
       - name: Drop CI schema
         run: dbt run-operation drop_schema --profiles-dir . --profile fission
 
       - name: Fetch prod manifest from s3
-        run: aws s3 cp s3://bi-learning-slimci/manifest.json ./prev_prod_run/manifest.json
+        run: aws s3 cp s3://${{ secrets.AWS_S3_BUCKET_NAME }}/manifest.json ./prev_prod_run/manifest.json
 
       - name: Run seeds
         run: dbt seed --profiles-dir . --profile fission -s state:modified --state ./prev_prod_run --target prod
@@ -57,7 +57,7 @@ jobs:
 
       - name: Copy prod artifacts to s3 bucket
         run: |
-          aws s3 cp ./target/manifest.json s3://bi-learning-slimci/manifest.json
-          aws s3 cp ./target/catalog.json s3://bi-learning-slimci/catalog.json
-          aws s3 cp ./target/index.html s3://bi-learning-slimci/index.html
-          aws s3 cp ./target/run_results.json s3://bi-learning-slimci/run_results.json
+          aws s3 cp ./target/manifest.json s3://${{ secrets.AWS_S3_BUCKET_NAME }}/manifest.json
+          aws s3 cp ./target/catalog.json s3://${{ secrets.AWS_S3_BUCKET_NAME }}/catalog.json
+          aws s3 cp ./target/index.html s3://${{ secrets.AWS_S3_BUCKET_NAME }}/index.html
+          aws s3 cp ./target/run_results.json s3://${{ secrets.AWS_S3_BUCKET_NAME }}/run_results.json
