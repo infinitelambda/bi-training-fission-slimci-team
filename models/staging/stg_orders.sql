@@ -15,7 +15,7 @@ renamed as (
         user_id as customer_id,
         order_date,
         status,
-        'Complete' as order_type
+        'Completed' as order_type
 
     from source
 
