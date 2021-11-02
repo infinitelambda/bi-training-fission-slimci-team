@@ -14,7 +14,7 @@ renamed as (
         id as customer_id,
         first_name,
         last_name,
-        'Regular' as customer_type
+        'Customer' as customer_type
 
     from source
 
