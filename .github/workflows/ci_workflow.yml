@@ -2,7 +2,7 @@ name: ci_on_pr
 on:
   pull_request:
     branches:
-      - 'session_04'
+      - 'session_04b'
 jobs:
   ci_build:
     env:
