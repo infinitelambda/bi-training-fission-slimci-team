@@ -7,8 +7,8 @@ jobs:
   ci_build:
     env:
       DBT_PWD: ${{ secrets.DBT_PWD }}
-      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_SLIM_CI_SERVICE_ACCOUNT_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SLIM_CI_SERVICE_ACCOUNT_SECRET }}
       CI_SCHEMA: "CI_PR_${{ github.event.pull_request.id }}"
 
     runs-on: ubuntu-latest
@@ -31,12 +31,12 @@ jobs:
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
-          role-to-assume: arn:aws:iam::389099493521:role/bi-learning-slimci-role
-          aws-region: us-east-2
+          # role-to-assume: arn:aws:iam::389099493521:role/bi-learning-slimci-role
+          aws-region: eu-west-1
           role-duration-seconds: 1200
 
       - name: Fetch prod manifest from s3
-        run: aws s3 cp s3://bi-learning-slimci/manifest.json ./prod_manifest/manifest.json
+        run: aws s3 cp s3://${{ secrets.AWS_S3_BUCKET_NAME }}/manifest.json ./prod_manifest/manifest.json
 
 #      - name: list modified dbt models
 #        id: dbt_ls
