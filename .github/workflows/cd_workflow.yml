@@ -7,12 +7,13 @@ on:
 jobs:
   on_merge:
     env:
+      DBT_PWD: ${{ secrets.DBT_PWD }}
       DBT_PWD_PROD: ${{ secrets.DBT_PWD_PROD }}
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_SLIM_CI_SERVICE_ACCOUNT_KEY_ID }}
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SLIM_CI_SERVICE_ACCOUNT_SECRET }}
       CI_SCHEMA: "CI_PR_${{ github.event.pull_request.id }}"
 
-    # only run if pull request is merged  
+    # only run if pull request is merged
     if: github.event.pull_request.merged == true
 
     runs-on: ubuntu-latest
